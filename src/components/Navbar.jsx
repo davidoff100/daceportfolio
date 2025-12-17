@@ -33,9 +33,18 @@ export const Navbar = () => {
           className="text-xl font-bold text-primary flex items-center"
           href="#hero"
         >
-          <span className="relative z-10">
-            <span className="text-glow text-foreground"> DaceDev's </span> Portfolio
-          </span>
+        
+            <span className="relative z-10 flex items-center">
+              <span className="relative inline-block">
+                <span className="text-glow text-foreground">DaceDev</span>
+                <img
+                  src="/projects/santa.png"
+                  alt="Santa Hat"
+                  className="absolute -top-1 -left-3 w-6 h-6 pointer-events-none select-none"
+                />
+              </span>
+              <span className="ml-1">Portfolio</span>
+            </span>
         </a>
 
         {/* desktop nav */}
