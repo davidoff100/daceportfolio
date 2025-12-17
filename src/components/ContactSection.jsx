@@ -38,12 +38,12 @@ export const ContactSection = () => {
 
         <div className="bg-card p-8 rounded-lg shadow-xs mx-4 md:mx-0">
           <div className="flex flex-col items-center gap-6">
-            <p className="text-2xl md:text-3xl font-semibold text-white">
-              Discord: <span className="font-medium text-white/90">@davidoff10</span>
+            <p className="text-2xl md:text-3xl font-semibold text-black dark:text-white">
+              Discord: <span className="font-medium text-black/90 dark:text-white/90">@davidoff10</span>
             </p>
 
-            <p className="text-2xl md:text-3xl font-semibold text-white">
-              Email: <a href="mailto:dacedev2@gmail.com" className="underline text-white/90">dacedev2@gmail.com</a>
+            <p className="text-2xl md:text-3xl font-semibold text-black dark:text-white">
+              Email: <a href="mailto:dacedev2@gmail.com" className="underline text-black/90 dark:text-white/90">dacedev2@gmail.com</a>
             </p>
 
             <p className="text-sm text-muted-foreground">Preferred &amp; fastest response via Discord</p>
