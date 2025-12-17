@@ -1,10 +1,13 @@
 import { Briefcase, Code, User } from "lucide-react";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 export const AboutSection = () => {
+  const { ref, isVisible } = useScrollAnimation();
   return (
-    <section id="about" className="py-24 px-4 relative">
-      {" "}
-      <div className="container mx-auto max-w-5xl">
+    <section id="about" className="py-24 px-4 relative bg-gradient-to-b from-background via-secondary/20 to-background overflow-hidden" ref={ref}>
+      <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl -z-10" />
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-primary/3 rounded-full blur-3xl -z-10" />
+      <div className={`container mx-auto max-w-5xl transition-all duration-700 ${isVisible ? "scroll-fade-in" : "opacity-0"}`}>
         <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">
           About <span className="text-primary"> Me</span>
         </h2>

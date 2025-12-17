@@ -3,30 +3,30 @@ import { ArrowRight, ExternalLink, Github } from "lucide-react";
 const projects = [
   {
     id: 1,
-    title: "",
-    description: "",
-    image: "",
-    tags: [],
-    demoUrl: "#",
+    title: "Directional Movement System",
+    description: "Smooth Directional Movement with Custom Shift Lock.",
+    image: "projects/project1.png",
+    tags: ['Roblox Lua'],
+    demoUrl: "https://screenpal.com/content/video/cTlDqJnYa5G",
     githubUrl: "#",
   },
   {
     id: 2,
-    title: "",
+    title: "Lobby Teleport System",
     description:
-      "",
-    image: "",
-    tags: [],
-    demoUrl: "#",
+      "A simple teleport system with the option to expand and add multiple features as needed.",
+    image: "projects/project2.png",
+    tags: ['Roblox Lua'],
+    demoUrl: "https://www.youtube.com/watch?v=TCQ_INnUb48",
     githubUrl: "#",
   },
   {
     id: 3,
-    title: "",
+    title: "ATM System",
     description:
-      "",
-    image: "",
-    tags: [],
+      "ATM System using DataStore, easy to expand and very interesting.",
+    image: "projects/project3.png",
+    tags: ['Roblox Lua'],
     demoUrl: "#",
     githubUrl: "#",
   },
@@ -34,7 +34,8 @@ const projects = [
 
 export const ProjectsSection = () => {
   return (
-    <section id="projects" className="py-24 px-4 relative">
+    <section id="projects" className="py-24 px-4 relative bg-gradient-to-b from-background to-secondary/30 overflow-hidden">
+      <div className="absolute top-1/3 left-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl -z-10" />
       <div className="container mx-auto max-w-5xl">
         <h2 className="text-3xl md:text-4xl font-bold mb-4 text-center">
           {" "}
@@ -42,8 +43,7 @@ export const ProjectsSection = () => {
         </h2>
 
         <p className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto">
-          Here are some of my recent projects. Each project was carefully
-          crafted with attention to detail, performance, and user experience.
+          Here are some of my recent projects.
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -73,38 +73,25 @@ export const ProjectsSection = () => {
                 <p className="text-muted-foreground text-sm mb-4">
                   {project.description}
                 </p>
-                <div className="flex justify-between items-center">
-                  <div className="flex space-x-3">
-                    <a
-                      href={project.demoUrl}
-                      target="_blank"
-                      className="text-foreground/80 hover:text-primary transition-colors duration-300"
-                    >
-                      <ExternalLink size={20} />
-                    </a>
-                    <a
-                      href={project.githubUrl}
-                      target="_blank"
-                      className="text-foreground/80 hover:text-primary transition-colors duration-300"
-                    >
-                      <Github size={20} />
-                    </a>
-                  </div>
+                <div className="flex justify-center items-center">
+                  <a
+                    href={project.demoUrl || project.githubUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="cosmic-button"
+                  >
+                    View Project
+                  </a>
                 </div>
               </div>
             </div>
           ))}
         </div>
 
-        <div className="text-center mt-12">
-          <a
-            className="cosmic-button w-fit flex items-center mx-auto gap-2"
-            target="_blank"
-            href="https://github.com/machadop1407"
-          >
-            Check My Github <ArrowRight size={16} />
-          </a>
-        </div>
+        <h2 className="text-3xl md:text-4xl font-bold mb-4 text-center mt-20">
+          {" "}
+          Older <span className="text-primary"> Projects </span>
+        </h2>
       </div>
     </section>
   );

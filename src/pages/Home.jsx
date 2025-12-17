@@ -1,5 +1,6 @@
 import { Navbar } from "../components/Navbar";
 import { ThemeToggle } from "../components/ThemeToggle";
+import { ScrollToTop } from "../components/ScrollToTop";
 import { StarBackground } from "@/components/StarBackground";
 import { HeroSection } from "../components/HeroSection";
 import { AboutSection } from "../components/AboutSection";
@@ -12,6 +13,8 @@ export const Home = () => {
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
       {/* Theme Toggle */}
       <ThemeToggle />
+      {/* Scroll to Top Button */}
+      <ScrollToTop />
       {/* Background Effects */}
       <StarBackground />
 
