@@ -1,6 +1,40 @@
 import { ArrowDown } from "lucide-react";
+import { useEffect, useState } from "react";
 
 export const HeroSection = () => {
+  const phrases = [
+    "Roblox Scripter",
+    "Programmer",
+    "Roblox Developer"
+  ];
+  const [text, setText] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    let timeout;
+    const fullText = phrases[index];
+    const speed = isDeleting ? 40 : 120;
+
+    if (!isDeleting && text === fullText) {
+      timeout = setTimeout(() => setIsDeleting(true), 900);
+    } else if (isDeleting && text === "") {
+      timeout = setTimeout(() => {
+        setIsDeleting(false);
+        setIndex((i) => (i + 1) % phrases.length);
+      }, 300);
+    } else {
+      timeout = setTimeout(() => {
+        const next = isDeleting
+          ? fullText.substring(0, text.length - 1)
+          : fullText.substring(0, text.length + 1);
+        setText(next);
+      }, speed);
+    }
+
+    return () => clearTimeout(timeout);
+  }, [text, isDeleting]);
+
   return (
     <section
       id="hero"
@@ -9,26 +43,21 @@ export const HeroSection = () => {
       <div className="container max-w-4xl mx-auto text-center z-10">
         <div className="space-y-6">
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
-            <span className="opacity-0 animate-fade-in"> Hi, I'm</span>
+            <span className="opacity-0 animate-fade-in"> Hey, I'm</span>
             <span className="text-primary opacity-0 animate-fade-in-delay-1">
               {" "}
-              Pedro
-            </span>
-            <span className="text-gradient ml-2 opacity-0 animate-fade-in-delay-2">
-              {" "}
-              Machado
+              DaceDev
             </span>
           </h1>
 
           <p className="text-lg md:text-xl text-muted-foreground max-2-2xl mx-auto opacity-0 animate-fade-in-delay-3">
-            I create stellar web experiences with modern technologies.
-            Specializing in front-end development, I build interfaces that are
-            both beautiful and functional.
+            <span className="text-primary font-medium">{text}</span>
+            <span className="ml-1 inline-block w-1 h-6 bg-primary align-middle animate-blink" />
           </p>
 
           <div className="pt-4 opacity-0 animate-fade-in-delay-4">
             <a href="#projects" className="cosmic-button">
-              View My Work
+              View My Projects
             </a>
           </div>
         </div>
