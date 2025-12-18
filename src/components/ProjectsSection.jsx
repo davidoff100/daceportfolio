@@ -24,10 +24,33 @@ const projects = [
     id: 3,
     title: "ATM System",
     description:
-      "ATM System using DataStore, easy to expand and very interesting.",
+      "ATM system using Roblox DataStore. During testing and demonstration, you may notice the leaderstats money value updating automatically at times. This behavior is intentional and is caused by a script that adds some money to the player’s balance in order to demonstrate the functionality of the ATM system.",
     image: "projects/project3.png",
     tags: ['Roblox Lua'],
-    demoUrl: "#",
+    demoUrl: "https://screenpal.com/content/video/cTlFYPnY5q8",
+    githubUrl: "#",
+  },
+];
+
+const olderProjects = [
+  {
+    id: 4,
+    title: "Inventory System",
+    description:
+      "This system is a bit old, made in early 2025, but still works fine.",
+    image: "projects/project4.png",
+    tags: ['Roblox Lua'],
+    demoUrl: "https://drive.google.com/file/d/1Tk14WMDQDUYMZ060BijUn3Koe9o7qfcK/view?t=6",
+    githubUrl: "#",
+  },
+  {
+    id: 5,
+    title: "Gun System",
+    description:
+      "My first ever gun system, made back in early 2025. Basic but works well.",
+    image: "projects/project5.png",
+    tags: ['Roblox Lua'],
+    demoUrl: "https://drive.google.com/file/d/14x3u4me_Rb6FQEO7HI1d6493UMTpxREv/view?t=26",
     githubUrl: "#",
   },
 ];
@@ -36,9 +59,9 @@ export const ProjectsSection = () => {
   return (
     <section id="projects" className="py-24 px-4 relative bg-gradient-to-b from-background to-secondary/30 overflow-hidden">
       <div className="absolute top-1/3 left-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl -z-10" />
+      <div className="absolute top-1/2 right-0 w-96 h-96 bg-primary/3 rounded-full blur-3xl -z-10" />
       <div className="container mx-auto max-w-5xl">
-        <h2 className="text-3xl md:text-4xl font-bold mb-4 text-center">
-          {" "}
+        <h2 className="text-3xl md:text-5xl font-bold mb-4 text-center bg-gradient-to-r from-foreground via-primary to-foreground bg-clip-text text-transparent animate-[gradient-shift_3s_ease-in-out_infinite] bg-[length:200%_auto]">
           Featured <span className="text-primary"> Projects </span>
         </h2>
 
@@ -50,17 +73,18 @@ export const ProjectsSection = () => {
           {projects.map((project, key) => (
             <div
               key={key}
-              className="group bg-card rounded-lg overflow-hidden shadow-xs card-hover"
+              className="group bg-card/50 backdrop-blur-sm rounded-xl overflow-hidden shadow-lg border border-primary/10 card-hover"
             >
-              <div className="h-48 overflow-hidden">
+              <div className="h-48 overflow-hidden relative">
+                <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent opacity-60 z-10" />
                 <img
                   src={project.image}
                   alt={project.title}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 group-hover:brightness-110"
                 />
               </div>
 
-              <div className="p-6">
+              <div className="p-6 relative">
                 <div className="flex flex-wrap gap-2 mb-4">
                   {project.tags.map((tag) => (
                     <span className="px-2 py-1 text-xs font-medium border rounded-full bg-secondary text-secondary-foreground">
@@ -92,6 +116,51 @@ export const ProjectsSection = () => {
           {" "}
           Older <span className="text-primary"> Projects </span>
         </h2>
+        <p className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto">
+          This section shows my older projects from the start of 2025. They are not as polished as my recent work but still demonstrate my growth as a developer.
+        </p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12 max-w-3xl mx-auto">
+          {olderProjects.map((project, key) => (
+            <div
+              key={key}
+              className="group bg-card/50 backdrop-blur-sm rounded-xl overflow-hidden shadow-lg border border-primary/10 card-hover"
+            >
+              <div className="h-48 overflow-hidden relative">
+                <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent opacity-60 z-10" />
+                <img
+                  src={project.image}
+                  alt={project.title}
+                  className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 group-hover:brightness-110"
+                />
+              </div>
+
+              <div className="p-6 relative">
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {project.tags.map((tag, idx) => (
+                    <span key={idx} className="px-2 py-1 text-xs font-medium border rounded-full bg-secondary text-secondary-foreground">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+
+                <h3 className="text-xl font-semibold mb-1"> {project.title}</h3>
+                <p className="text-muted-foreground text-sm mb-4">
+                  {project.description}
+                </p>
+                <div className="flex justify-center items-center">
+                  <a
+                    href={project.demoUrl || project.githubUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="cosmic-button"
+                  >
+                    View Project
+                  </a>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );

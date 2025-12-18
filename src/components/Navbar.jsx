@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
 import { Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
+import { ThemeToggle } from "./ThemeToggle";
 
 const navItems = [
   { name: "Home", href: "#hero" },
@@ -92,6 +93,9 @@ export const Navbar = () => {
             ))}
           </div>
         </div>
+        
+        {/* Theme toggle visible on all screen sizes */}
+        <ThemeToggle />
       </div>
     </nav>
   );
