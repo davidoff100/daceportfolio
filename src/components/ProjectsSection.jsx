@@ -29,12 +29,22 @@ const projects = [
     tags: ['Roblox Lua'],
     demoUrl: "https://screenpal.com/content/video/cTlFYPnY5q8",
     githubUrl: "#",
-  },
-];
+  },  
+  {
+    id: 4,
+    title: "Tycoon System",
+    description:
+      "This was probably the most fun project I’ve worked on. It took me two days to invent and build the system, and it’s designed to be highly expandable. The video is a bit long, but it covers all the features of the system.",
+    image: "projects/project6.png",
+    tags: ['Roblox Lua'],
+    demoUrl: "https://www.youtube.com/watch?v=ClKzzjqBVXo",
+    githubUrl: "#",
+  }
+  ,];
 
 const olderProjects = [
   {
-    id: 4,
+    id: 5,
     title: "Inventory System",
     description:
       "This system is a bit old, made in early 2025, but still works fine.",
@@ -44,10 +54,8 @@ const olderProjects = [
     githubUrl: "#",
   },
   {
-    id: 5,
-    title: "Gun System",
-    description:
-      "My first ever gun system, made back in early 2025. Basic but works well.",
+    id: 6,
+    description: "My first ever gun system, made back in early 2025. Basic but works well.",
     image: "projects/project5.png",
     tags: ['Roblox Lua'],
     demoUrl: "https://drive.google.com/file/d/14x3u4me_Rb6FQEO7HI1d6493UMTpxREv/view?t=26",
@@ -59,9 +67,9 @@ export const ProjectsSection = () => {
   return (
     <section id="projects" className="py-24 px-4 relative bg-gradient-to-b from-background to-secondary/30 overflow-hidden">
       <div className="absolute top-1/3 left-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl -z-10" />
-      <div className="absolute top-1/2 right-0 w-96 h-96 bg-primary/3 rounded-full blur-3xl -z-10" />
       <div className="container mx-auto max-w-5xl">
-        <h2 className="text-3xl md:text-5xl font-bold mb-4 text-center bg-gradient-to-r from-foreground via-primary to-foreground bg-clip-text text-transparent animate-[gradient-shift_3s_ease-in-out_infinite] bg-[length:200%_auto]">
+        <h2 className="text-3xl md:text-4xl font-bold mb-4 text-center">
+          {" "}
           Featured <span className="text-primary"> Projects </span>
         </h2>
 
@@ -73,18 +81,17 @@ export const ProjectsSection = () => {
           {projects.map((project, key) => (
             <div
               key={key}
-              className="group bg-card/50 backdrop-blur-sm rounded-xl overflow-hidden shadow-lg border border-primary/10 card-hover"
+              className={`group bg-card rounded-lg overflow-hidden shadow-xs card-hover ${key === 3 ? 'lg:col-start-2' : ''}`}
             >
-              <div className="h-48 overflow-hidden relative">
-                <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent opacity-60 z-10" />
+              <div className="h-48 overflow-hidden">
                 <img
                   src={project.image}
                   alt={project.title}
-                  className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 group-hover:brightness-110"
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                 />
               </div>
 
-              <div className="p-6 relative">
+              <div className="p-6">
                 <div className="flex flex-wrap gap-2 mb-4">
                   {project.tags.map((tag) => (
                     <span className="px-2 py-1 text-xs font-medium border rounded-full bg-secondary text-secondary-foreground">
@@ -123,18 +130,17 @@ export const ProjectsSection = () => {
           {olderProjects.map((project, key) => (
             <div
               key={key}
-              className="group bg-card/50 backdrop-blur-sm rounded-xl overflow-hidden shadow-lg border border-primary/10 card-hover"
+              className="group bg-card rounded-lg overflow-hidden shadow-xs card-hover"
             >
-              <div className="h-48 overflow-hidden relative">
-                <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent opacity-60 z-10" />
+              <div className="h-48 overflow-hidden">
                 <img
                   src={project.image}
                   alt={project.title}
-                  className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 group-hover:brightness-110"
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                 />
               </div>
 
-              <div className="p-6 relative">
+              <div className="p-6">
                 <div className="flex flex-wrap gap-2 mb-4">
                   {project.tags.map((tag, idx) => (
                     <span key={idx} className="px-2 py-1 text-xs font-medium border rounded-full bg-secondary text-secondary-foreground">
