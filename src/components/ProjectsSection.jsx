@@ -7,7 +7,7 @@ const projects = [
     description: "Smooth Directional Movement with Custom Shift Lock.",
     image: "projects/project1.png",
     tags: ['Roblox Lua'],
-    demoUrl: "https://youtu.be/TKRLcIzoiT0",
+    demoUrl: "https://youtu.be/01_pJm1p0c0",
     githubUrl: "#",
   },
   {
