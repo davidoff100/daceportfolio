@@ -23,7 +23,7 @@ export const AboutSection = () => {
             </p>
 
             <p className="text-muted-foreground">
-            I specialize in writing scalable code with a strong focus on creativity and organization, making it easy for any developer to understand and edit at any time. While I’m always learning and growing to further strengthen my skill set is solid, allowing me to work efficiently with other developers.
+            I specialize in writing scalable code with a strong focus on creativity and organization, making it easy for any developer to understand and edit at any time. While I’m always learning and growing to further strengthen my skills, my skill set is solid, allowing me to work efficiently with other developers.
             </p>
 
             <p className="text-muted-foreground">
