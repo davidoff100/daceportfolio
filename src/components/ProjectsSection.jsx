@@ -7,7 +7,7 @@ const projects = [
     description: "Smooth Directional Movement with Custom Shift Lock.",
     image: "projects/project1.png",
     tags: ['Roblox Lua'],
-    demoUrl: "https://screenpal.com/content/video/cTlDqJnYa5G",
+    demoUrl: "https://youtu.be/TKRLcIzoiT0",
     githubUrl: "#",
   },
   {
@@ -27,7 +27,7 @@ const projects = [
       "ATM system using Roblox DataStore. During testing and demonstration, you may notice the leaderstats money value updating automatically at times. This behavior is intentional and is caused by a script that adds some money to the player’s balance in order to demonstrate the functionality of the ATM system.",
     image: "projects/project3.png",
     tags: ['Roblox Lua'],
-    demoUrl: "https://screenpal.com/content/video/cTlFYPnY5q8",
+    demoUrl: "https://youtu.be/TKRLcIzoiT0",
     githubUrl: "#",
   },  
   {
