@@ -1,40 +1,62 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 
-// id, size, x, y, opacity, animationDuration
-// id, size, x, y, delay, animationDuration
+// Optimize for mobile performance
+const isMobile = () => window.innerWidth < 768;
+const isLowPowerDevice = () => {
+  return navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4;
+};
 
 export const StarBackground = () => {
   const [stars, setStars] = useState([]);
   const [meteors, setMeteors] = useState([]);
+  const shouldReduceMotion = useMemo(() => 
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+  []);
 
   useEffect(() => {
+    // Skip heavy animations on low-power devices or if user prefers reduced motion
+    if (shouldReduceMotion || (isMobile() && isLowPowerDevice())) {
+      return;
+    }
+
     generateStars();
     generateMeteors();
 
+    let resizeTimeout;
     const handleResize = () => {
-      generateStars();
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        generateStars();
+      }, 250); // Debounce resize
     };
 
-    window.addEventListener("resize", handleResize);
+    window.addEventListener("resize", handleResize, { passive: true });
 
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      clearTimeout(resizeTimeout);
+    };
+  }, [shouldReduceMotion]);
 
   const generateStars = () => {
+    // Significantly reduce stars on mobile devices
+    const baseDensity = isMobile() ? 15000 : 10000;
     const numberOfStars = Math.floor(
-      (window.innerWidth * window.innerHeight) / 10000
+      (window.innerWidth * window.innerHeight) / baseDensity
     );
+    const maxStars = isMobile() ? 50 : 150;
+    const finalStarCount = Math.min(numberOfStars, maxStars);
 
     const newStars = [];
 
-    for (let i = 0; i < numberOfStars; i++) {
+    for (let i = 0; i < finalStarCount; i++) {
       newStars.push({
         id: i,
-        size: Math.random() * 3 + 1,
+        size: Math.random() * 2 + 0.5, // Smaller stars
         x: Math.random() * 100,
         y: Math.random() * 100,
-        opacity: Math.random() * 0.5 + 0.5,
-        animationDuration: Math.random() * 4 + 2,
+        opacity: Math.random() * 0.4 + 0.4,
+        animationDuration: Math.random() * 5 + 3, // Slower animation
       });
     }
 
@@ -42,7 +64,8 @@ export const StarBackground = () => {
   };
 
   const generateMeteors = () => {
-    const numberOfMeteors = 4;
+    // Fewer meteors on mobile
+    const numberOfMeteors = isMobile() ? 2 : 4;
     const newMeteors = [];
 
     for (let i = 0; i < numberOfMeteors; i++) {
@@ -59,8 +82,13 @@ export const StarBackground = () => {
     setMeteors(newMeteors);
   };
 
+  // Don't render anything if reduced motion or low power device
+  if (shouldReduceMotion || (isMobile() && isLowPowerDevice())) {
+    return null;
+  }
+
   return (
-    <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+    <div className="fixed inset-0 overflow-hidden pointer-events-none z-0" style={{ willChange: 'auto' }}>
       {stars.map((star) => (
         <div
           key={star.id}
@@ -72,6 +100,8 @@ export const StarBackground = () => {
             top: star.y + "%",
             opacity: star.opacity,
             animationDuration: star.animationDuration + "s",
+            willChange: 'opacity',
+            transform: 'translateZ(0)', // Force GPU acceleration
           }}
         />
       ))}
@@ -85,8 +115,10 @@ export const StarBackground = () => {
             height: meteor.size * 2 + "px",
             left: meteor.x + "%",
             top: meteor.y + "%",
-            animationDelay: meteor.delay,
+            animationDelay: meteor.delay + "s",
             animationDuration: meteor.animationDuration + "s",
+            willChange: 'transform, opacity',
+            transform: 'translateZ(0)', // Force GPU acceleration
           }}
         />
       ))}

@@ -3,8 +3,36 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+    <meta name="description" content="DaceDev's Portfolio - Roblox Developer & Scripter" />
+    
+    <!-- Performance optimizations -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    
+    <!-- Disable tap highlighting on mobile for better UX -->
+    <meta name="theme-color" content="#ef4444" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    
     <title>DaceDev's Portfolio</title>
+    
+    <style>
+      /* Prevent flash of unstyled content and improve perceived performance */
+      #root { 
+        min-height: 100vh; 
+        background: hsl(210, 40%, 98%);
+      }
+      @media (prefers-color-scheme: dark) {
+        #root { 
+          background: hsl(222, 47%, 4%); 
+        }
+      }
+      /* Disable iOS tap highlight */
+      * {
+        -webkit-tap-highlight-color: transparent;
+      }
+    </style>
   </head>
   <body>
     <div id="root"></div>
