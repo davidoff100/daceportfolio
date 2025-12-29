@@ -33,7 +33,7 @@ export const ContactSection = () => {
           Let's Connect
         </h2>
         <p className="text-muted-foreground mb-12 max-w-2xl mx-auto">
-          Ready to collaborate or just want to chat? Reach out to me!
+          Ready to collaborate? Reach out to me!
         </p>
 
         <div className="grid md:grid-cols-2 gap-8 mt-12">
