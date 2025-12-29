@@ -12,7 +12,7 @@ const ProjectCard = memo(({ project, isLarge = false }) => (
         alt={project.title || "Project"}
         loading="lazy"
         decoding="async"
-        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+        className="w-full h-full object-cover md:transition-transform md:duration-500 md:group-hover:scale-110"
         style={{ contentVisibility: 'auto' }}
       />
     </div>
