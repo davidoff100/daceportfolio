@@ -85,12 +85,32 @@ const projects = [
     tags: ['Roblox Lua'],
     demoUrl: "https://www.youtube.com/watch?v=ClKzzjqBVXo",
     githubUrl: "#",
-  }
+  },
+  {
+    id: 5,
+    title: "Advanced TDS System",
+    description:
+      "This TDS system is currently one of the most advanced systems I’ve built throughout my entire scripting journey.",
+    image: "projects/project8.png",
+    tags: ['Roblox Lua'],
+    demoUrl: "https://www.youtube.com/watch?v=NqhaYYEquq0",
+    githubUrl: "#",
+  },
+  {
+    id: 6,
+    title: "",
+    description:
+      "A new project will be here soon!",
+    image: "projects/project7.jpg",
+    tags: ['Roblox Lua'],
+    demoUrl: ".",
+    githubUrl: "#",
+  },
   ,];
 
 const olderProjects = [
   {
-    id: 5,
+    id: 7,
     title: "Inventory System",
     description:
       "This system is a bit old, made in early 2025, but still works fine.",
@@ -100,7 +120,7 @@ const olderProjects = [
     githubUrl: "#",
   },
   {
-    id: 6,
+    id: 8,
     description: "My first ever gun system, made back in early 2025. Basic but works well.",
     image: "projects/project5.png",
     tags: ['Roblox Lua'],
@@ -128,7 +148,7 @@ export const ProjectsSection = () => {
             <ProjectCard 
               key={project.id} 
               project={project} 
-              isLarge={project.id === 4}
+              isLarge={project.id === 5}
             />
           ))}
         </div>
