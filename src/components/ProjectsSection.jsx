@@ -49,11 +49,11 @@ ProjectCard.displayName = "ProjectCard";
 const projects = [
   {
     id: 1,
-    title: "Directional Movement System",
-    description: "Smooth Directional Movement with Custom Shift Lock.",
+    title: "1D Progress Bar",
+    description: "As its name suggests, this is a progress bar that moves in a single direction, vertically along the screen’s y-axis, either upward or downward.",
     image: "projects/project1.png",
     tags: ['Roblox Lua'],
-    demoUrl: "https://youtu.be/01_pJm1p0c0",
+    demoUrl: "",
     githubUrl: "#",
   },
   {
