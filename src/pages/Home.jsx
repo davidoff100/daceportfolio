@@ -1,9 +1,9 @@
 import { lazy, Suspense } from "react";
 import { Navbar } from "../components/Navbar";
-import { ThemeToggle } from "../components/ThemeToggle";
 import { ScrollToTop } from "../components/ScrollToTop";
 import { StarBackground } from "@/components/StarBackground";
 import { HeroSection } from "../components/HeroSection";
+import { Notification } from "../components/Notification";
 
 // Lazy load heavy sections for better initial load performance
 const AboutSection = lazy(() => import("../components/AboutSection").then(mod => ({ default: mod.AboutSection })));
@@ -20,12 +20,12 @@ const LoadingFallback = () => (
 export const Home = () => {
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
-      {/* Theme Toggle */}
-      <ThemeToggle />
       {/* Scroll to Top Button */}
       <ScrollToTop />
       {/* Background Effects */}
       <StarBackground />
+      {/* Notification */}
+      <Notification />
 
       {/* Navbar */}
       <Navbar />

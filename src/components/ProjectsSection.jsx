@@ -51,9 +51,9 @@ const projects = [
     id: 1,
     title: "1D Progress Bar",
     description: "As its name suggests, this is a progress bar that moves in a single direction, vertically along the screen’s y-axis, either upward or downward.",
-    image: "projects/project1.png",
+    image: "projects/project9.png",
     tags: ['Roblox Lua'],
-    demoUrl: "",
+    demoUrl: "https://drive.google.com/file/d/1_MZsjvptaxq2Ik_cE-fApDkPo0SU7IFL/view",
     githubUrl: "#",
   },
   {

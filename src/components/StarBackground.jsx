@@ -1,279 +1,190 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 
-// Optimize for mobile performance
-const isMobile = () => window.innerWidth < 768;
-const isLowPowerDevice = () => {
-  return navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4;
+const GRID_COLUMNS = 11;
+const GRID_ROWS = 7;
+const MAX_CONNECTIONS = 3;
+const REPULSE_RADIUS = 16;
+const CONNECTION_RADIUS = 18;
+
+const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+const distanceSq = (a, b) => (a.x - b.x) ** 2 + (a.y - b.y) ** 2;
+const distance = (a, b) => Math.sqrt(distanceSq(a, b));
+
+const createDots = () => {
+  const dots = [];
+  const xGap = 86 / (GRID_COLUMNS - 1);
+  const yGap = 78 / (GRID_ROWS - 1);
+
+  for (let row = 0; row < GRID_ROWS; row++) {
+    for (let col = 0; col < GRID_COLUMNS; col++) {
+      const id = row * GRID_COLUMNS + col;
+      const jitterX = (Math.random() - 0.5) * 4;
+      const jitterY = (Math.random() - 0.5) * 4;
+
+      dots.push({
+        id,
+        x: clamp(6 + col * xGap + jitterX, 4, 96),
+        y: clamp(10 + row * yGap + jitterY, 6, 92),
+        size: Math.random() * 2.4 + 2.2,
+      });
+    }
+  }
+
+  return dots;
 };
 
-const STAR_COLORS = [
-  { color: '#FFFFFF', glow: 'rgba(255, 255, 255, 0.8)', weight: 40 }, // White
-  { color: '#06b6d4', glow: 'rgba(6, 182, 212, 0.8)', weight: 25 },   // Cyan
-  { color: '#60a5fa', glow: 'rgba(96, 165, 250, 0.8)', weight: 20 },  // Blue
-  { color: '#a78bfa', glow: 'rgba(167, 139, 250, 0.8)', weight: 10 }, // Purple
-  { color: '#fbbf24', glow: 'rgba(251, 191, 36, 0.8)', weight: 5 },   // Yellow
-];
-
-const getRandomColor = () => {
-  const totalWeight = STAR_COLORS.reduce((sum, c) => sum + c.weight, 0);
-  let random = Math.random() * totalWeight;
-  
-  for (const colorObj of STAR_COLORS) {
-    if (random < colorObj.weight) return colorObj;
-    random -= colorObj.weight;
-  }
-  return STAR_COLORS[0];
-};
-
-// Generate initial stars immediately
-const generateInitialStars = () => {
-  const baseDensity = isMobile() ? 12000 : 6000;
-  const numberOfStars = Math.floor(
-    (window.innerWidth * window.innerHeight) / baseDensity
-  );
-  const maxStars = isMobile() ? 80 : 250;
-  const finalStarCount = Math.min(numberOfStars, maxStars);
-  const newStars = [];
-
-  for (let i = 0; i < finalStarCount; i++) {
-    const colorObj = getRandomColor();
-    const size = Math.random() * 3 + 0.5;
-    const isTwinkling = Math.random() > 0.6;
-    
-    newStars.push({
-      id: i,
-      size: size,
-      x: Math.random() * 100,
-      y: Math.random() * 100,
-      opacity: Math.random() * 0.5 + 0.5,
-      color: colorObj.color,
-      glow: colorObj.glow,
-      animationDuration: Math.random() * 4 + 2,
-      isTwinkling: isTwinkling,
-      twinkleDelay: Math.random() * 5,
-      glowSize: size > 2 ? size * 3 : 0,
-    });
-  }
-  return newStars;
-};
-
-const generateInitialMeteors = () => {
-  const numberOfMeteors = isMobile() ? 3 : 6;
-  const newMeteors = [];
-
-  for (let i = 0; i < numberOfMeteors; i++) {
-    const colorObj = getRandomColor();
-    newMeteors.push({
-      id: i,
-      size: Math.random() * 2 + 1,
-      x: Math.random() * 100,
-      y: Math.random() * 30,
-      delay: 0, // Start immediately
-      animationDuration: Math.random() * 2 + 3, // Slower: 3-5s
-      color: colorObj.glow,
-    });
-  }
-  return newMeteors;
-};
-
-const generateInitialNebulas = () => {
-  const numberOfNebulas = isMobile() ? 2 : 4;
-  const newNebulas = [];
-
-  for (let i = 0; i < numberOfNebulas; i++) {
-    newNebulas.push({
-      id: i,
-      size: Math.random() * 300 + 200,
-      x: Math.random() * 100,
-      y: Math.random() * 100,
-      opacity: Math.random() * 0.1 + 0.05,
-      color: i % 2 === 0 ? 'rgba(6, 182, 212, 0.15)' : 'rgba(167, 139, 250, 0.15)',
-      animationDuration: Math.random() * 15 + 20, // Slower: 20-35s
-    });
-  }
-  return newNebulas;
+const getConnections = (dot, dots) => {
+  return dots
+    .map((peer) => ({
+      ...peer,
+      dist: distanceSq(dot, peer),
+    }))
+    .filter((peer) => peer.id !== dot.id)
+    .sort((a, b) => a.dist - b.dist)
+    .slice(0, MAX_CONNECTIONS);
 };
 
 export const StarBackground = () => {
-  const shouldReduceMotion = useMemo(() => 
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches,
-  []);
-  
-  // Always render unless user prefers reduced motion
-  const shouldRender = !shouldReduceMotion;
-  
-  const [stars, setStars] = useState(() => shouldRender ? generateInitialStars() : []);
-  const [meteors, setMeteors] = useState(() => shouldRender ? generateInitialMeteors() : []);
-  const [nebulas, setNebulas] = useState(() => shouldRender ? generateInitialNebulas() : []);
+  const [dots, setDots] = useState([]);
+  const [cursor, setCursor] = useState(null);
 
   useEffect(() => {
-    // Skip heavy animations if user prefers reduced motion
-    if (!shouldRender) {
-      return;
-    }
+    setDots(createDots());
+  }, []);
 
-    // Only handle resize, stars are already initialized
-    let resizeTimeout;
-    const handleResize = () => {
-      clearTimeout(resizeTimeout);
-      resizeTimeout = setTimeout(() => {
-        generateStars();
-        generateNebulas();
-      }, 250); // Debounce resize
+  useEffect(() => {
+    const handleWindowMove = (event) => {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      setCursor({
+        x: (event.clientX / width) * 100,
+        y: (event.clientY / height) * 100,
+      });
     };
 
-    window.addEventListener("resize", handleResize, { passive: true });
+    const handleWindowLeave = () => setCursor(null);
+
+    window.addEventListener("mousemove", handleWindowMove);
+    window.addEventListener("mouseleave", handleWindowLeave);
+    window.addEventListener("blur", handleWindowLeave);
 
     return () => {
-      window.removeEventListener("resize", handleResize);
-      clearTimeout(resizeTimeout);
+      window.removeEventListener("mousemove", handleWindowMove);
+      window.removeEventListener("mouseleave", handleWindowLeave);
+      window.removeEventListener("blur", handleWindowLeave);
     };
-  }, [shouldReduceMotion]);
+  }, []);
 
-  const generateStars = () => {
-    // More stars for wow factor, but optimized for mobile
-    const baseDensity = isMobile() ? 12000 : 6000;
-    const numberOfStars = Math.floor(
-      (window.innerWidth * window.innerHeight) / baseDensity
-    );
-    const maxStars = isMobile() ? 80 : 250;
-    const finalStarCount = Math.min(numberOfStars, maxStars);
-
-    const newStars = [];
-
-    for (let i = 0; i < finalStarCount; i++) {
-      const colorObj = getRandomColor();
-      const size = Math.random() * 3 + 0.5;
-      const isTwinkling = Math.random() > 0.6; // 40% twinkle
-      
-      newStars.push({
-        id: i,
-        size: size,
-        x: Math.random() * 100,
-        y: Math.random() * 100,
-        opacity: Math.random() * 0.5 + 0.5,
-        color: colorObj.color,
-        glow: colorObj.glow,
-        animationDuration: Math.random() * 3 + 3, // Slower: 3-6s
-        isTwinkling: isTwinkling,
-        twinkleDelay: 0, // Start immediately
-        glowSize: size > 2 ? size * 3 : 0, // Only large stars glow
-      });
+  const getDotPosition = (dot) => {
+    if (!cursor) {
+      return { x: dot.x, y: dot.y };
     }
 
-    setStars(newStars);
-  };
-
-  const generateMeteors = () => {
-    // More meteors for visual impact
-    const numberOfMeteors = isMobile() ? 3 : 6;
-    const newMeteors = [];
-
-    for (let i = 0; i < numberOfMeteors; i++) {
-      const colorObj = getRandomColor();
-      newMeteors.push({
-        id: i,
-        size: Math.random() * 2 + 1,
-        x: Math.random() * 100,
-        y: Math.random() * 30,
-        delay: Math.random() * 10,
-        animationDuration: Math.random() * 2 + 2,
-        color: colorObj.glow,
-      });
+    const dist = distance(cursor, dot);
+    if (dist > REPULSE_RADIUS) {
+      return { x: dot.x, y: dot.y };
     }
 
-    setMeteors(newMeteors);
+    const strength = (1 - dist / REPULSE_RADIUS) * 7;
+    const dx = dot.x - cursor.x;
+    const dy = dot.y - cursor.y;
+    const norm = Math.sqrt(dx * dx + dy * dy) || 1;
+    const offsetX = (dx / norm) * strength;
+    const offsetY = (dy / norm) * strength;
+
+    return {
+      x: clamp(dot.x + offsetX, 0, 100),
+      y: clamp(dot.y + offsetY, 0, 100),
+    };
   };
 
-  const generateNebulas = () => {
-    // Add nebula clouds for depth
-    const numberOfNebulas = isMobile() ? 2 : 4;
-    const newNebulas = [];
+  const activeLines = useMemo(() => {
+    if (!cursor || dots.length === 0) return [];
 
-    for (let i = 0; i < numberOfNebulas; i++) {
-      newNebulas.push({
-        id: i,
-        size: Math.random() * 300 + 200,
-        x: Math.random() * 100,
-        y: Math.random() * 100,
-        opacity: Math.random() * 0.1 + 0.05,
-        color: i % 2 === 0 ? 'rgba(6, 182, 212, 0.15)' : 'rgba(167, 139, 250, 0.15)',
-        animationDuration: Math.random() * 20 + 15,
+    const lines = new Map();
+    const nearbyDots = dots.filter((dot) => distance(cursor, dot) < CONNECTION_RADIUS);
+
+    nearbyDots.forEach((dot) => {
+      const connections = getConnections(dot, dots);
+      connections.forEach((target) => {
+        const key = [dot.id, target.id].sort().join("-");
+        if (!lines.has(key) && distance(dot, target) < CONNECTION_RADIUS * 1.2) {
+          lines.set(key, { from: dot, to: target });
+        }
       });
-    }
+    });
 
-    setNebulas(newNebulas);
-  };
-
-  // Don't render anything if reduced motion or low power device
-  if (!shouldRender) {
-    return null;
-  }
+    return Array.from(lines.values());
+  }, [cursor, dots]);
 
   return (
-    <div className="fixed inset-0 overflow-hidden pointer-events-none z-0" style={{ willChange: 'auto' }}>
-      {/* Nebula clouds for depth */}
-      {nebulas.map((nebula) => (
-        <div
-          key={`nebula-${nebula.id}`}
-          className="absolute rounded-full blur-3xl animate-pulse-subtle"
-          style={{
-            width: nebula.size + "px",
-            height: nebula.size + "px",
-            left: nebula.x + "%",
-            top: nebula.y + "%",
-            background: nebula.color,
-            opacity: nebula.opacity,
-            animationDuration: nebula.animationDuration + "s",
-            transform: 'translateZ(0)',
-          }}
-        />
-      ))}
+    <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
+      <div className="absolute inset-0 hack-grid" />
+      <svg className="absolute inset-0 w-full h-full" aria-hidden="true">
+        <defs>
+          <filter id="cursorGlow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="8" result="blur" />
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+        </defs>
+        {cursor && (
+          <>
+            <circle
+              cx={`${cursor.x}%`}
+              cy={`${cursor.y}%`}
+              r="22"
+              fill="rgba(56, 255, 211, 0.14)"
+              filter="url(#cursorGlow)"
+            />
+            <circle
+              cx={`${cursor.x}%`}
+              cy={`${cursor.y}%`}
+              r="6"
+              fill="rgba(56, 255, 211, 0.95)"
+              opacity="0.95"
+            />
+          </>
+        )}
+        {activeLines.map((line, index) => {
+          const from = getDotPosition(line.from);
+          const to = getDotPosition(line.to);
+          return (
+            <line
+              key={`line-${index}`}
+              className="hack-line active"
+              x1={`${from.x}%`}
+              y1={`${from.y}%`}
+              x2={`${to.x}%`}
+              y2={`${to.y}%`}
+            />
+          );
+        })}
+      </svg>
 
-      {/* Enhanced stars with colors and glow */}
-      {stars.map((star) => (
-        <div
-          key={star.id}
-          className={star.isTwinkling ? "absolute animate-pulse-subtle" : "absolute"}
-          style={{
-            width: star.size + "px",
-            height: star.size + "px",
-            left: star.x + "%",
-            top: star.y + "%",
-            opacity: star.opacity,
-            backgroundColor: star.color,
-            borderRadius: '50%',
-            boxShadow: star.glowSize > 0 
-              ? `0 0 ${star.glowSize}px ${star.glowSize / 2}px ${star.glow}`
-              : `0 0 4px 1px ${star.glow}`,
-            animationDuration: star.animationDuration + "s",
-            animationDelay: star.twinkleDelay + "s",
-            willChange: star.isTwinkling ? 'opacity' : 'auto',
-            transform: 'translateZ(0)',
-          }}
-        />
-      ))}
+      <div className="absolute inset-0 pointer-events-none">
+        {dots.map((dot) => {
+          const isActive = cursor && distance(cursor, dot) < CONNECTION_RADIUS;
+          const pos = getDotPosition(dot);
 
-      {/* Enhanced meteors with color trails */}
-      {meteors.map((meteor) => (
-        <div
-          key={meteor.id}
-          className="absolute animate-meteor"
-          style={{
-            width: meteor.size * 60 + "px",
-            height: meteor.size * 2 + "px",
-            left: meteor.x + "%",
-            top: meteor.y + "%",
-            borderRadius: '50%',
-            background: `linear-gradient(to right, ${meteor.color}, transparent)`,
-            boxShadow: `0 0 15px 5px ${meteor.color}`,
-            animationDelay: meteor.delay + "s",
-            animationDuration: meteor.animationDuration + "s",
-            willChange: 'transform, opacity',
-            transform: 'translateZ(0)',
-          }}
-        />
-      ))}
+          return (
+            <div
+              key={dot.id}
+              className={`hack-dot ${isActive ? "active" : ""}`}
+              style={{
+                left: `${pos.x}%`,
+                top: `${pos.y}%`,
+                width: `${dot.size * 2.3}px`,
+                height: `${dot.size * 2.3}px`,
+                opacity: isActive ? 1 : 0.75,
+                transform: "translate(-50%, -50%)",
+              }}
+            />
+          );
+        })}
+      </div>
     </div>
   );
 };
