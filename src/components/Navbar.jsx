@@ -30,16 +30,18 @@ export const Navbar = () => {
     >
       <div className="container flex items-center justify-between">
         <a
-          className="text-xl font-bold text-primary flex items-center"
+          className="flex items-center gap-3"
           href="#hero"
         >
-        
-            <span className="relative z-10 flex items-center">
-              <span className="relative inline-block">
-                <span className="text-glow text-foreground">DaceDev</span>
-              </span>
-              <span className="ml-1">Portfolio</span>
+          <span className="flex h-11 w-11 items-center justify-center rounded-full bg-primary/10 ring-1 ring-primary/20 shadow-sm">
+            <span className="text-lg font-black text-primary">D</span>
+          </span>
+          <span className="flex flex-col leading-tight">
+            <span className="text-lg font-bold text-foreground">DaceDev</span>
+            <span className="text-xs uppercase tracking-[0.22em] text-foreground/60">
+              Portfolio
             </span>
+          </span>
         </a>
 
         {/* desktop nav */}
