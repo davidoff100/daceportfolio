@@ -2,27 +2,8 @@ import {
   Mail,
   MessageCircle,
 } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { useToast } from "@/hooks/use-toast";
-import { useState } from "react";
 
 export const ContactSection = () => {
-  const { toast } = useToast();
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    setIsSubmitting(true);
-
-    setTimeout(() => {
-      toast({
-        title: "Message sent!",
-        description: "Thank you for your message. I'll get back to you soon.",
-      });
-      setIsSubmitting(false);
-    }, 1500);
-  };
   return (
     <section id="contact" className="py-24 px-4 relative bg-gradient-to-b from-secondary/30 to-background overflow-hidden">
       <div className="absolute inset-0 -z-10">

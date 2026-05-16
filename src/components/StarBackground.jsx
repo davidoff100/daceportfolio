@@ -1,7 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
 
-const GRID_COLUMNS = 11;
-const GRID_ROWS = 7;
 const MAX_CONNECTIONS = 3;
 const REPULSE_RADIUS = 16;
 const CONNECTION_RADIUS = 18;
@@ -10,7 +8,16 @@ const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 const distanceSq = (a, b) => (a.x - b.x) ** 2 + (a.y - b.y) ** 2;
 const distance = (a, b) => Math.sqrt(distanceSq(a, b));
 
+const getGridDimensions = () => {
+  const isMobile = window.innerWidth < 768;
+  return {
+    columns: isMobile ? 6 : 11,
+    rows: isMobile ? 4 : 7,
+  };
+};
+
 const createDots = () => {
+  const { columns: GRID_COLUMNS, rows: GRID_ROWS } = getGridDimensions();
   const dots = [];
   const xGap = 86 / (GRID_COLUMNS - 1);
   const yGap = 78 / (GRID_ROWS - 1);
@@ -50,6 +57,15 @@ export const StarBackground = () => {
 
   useEffect(() => {
     setDots(createDots());
+  }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setDots(createDots());
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   useEffect(() => {

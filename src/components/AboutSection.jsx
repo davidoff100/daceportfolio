@@ -31,9 +31,6 @@ export const AboutSection = () => {
              Hey! I’m DaceDev. I’ve been around Roblox for over 6 years now, though my real dive into scripting started back in 2022. Like many developers, I started just by playing and studying the top games, trying to figure out how they actually worked.
             </p>
             <p className="text-muted-foreground leading-relaxed">
-              I’m a big believer in modular systems. For me, it’s all about creating a professional foundation that’s easy to scale and won't break when a game starts to grow.
-            </p>
-            <p className="text-muted-foreground leading-relaxed">
              I actually took a short break a while back to learn other programming languages. That time away was a game-changer, it gave me a fresh perspective and a much sharper toolkit. Now, I’m back on the platform with a renewed passion, focused on building game systems that are creative.
             </p>
           </div>

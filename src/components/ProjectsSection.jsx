@@ -1,5 +1,4 @@
 import { memo } from "react";
-import { ArrowRight, ExternalLink, Github } from "lucide-react";
 
 // Memoized project card component for better performance
 const ProjectCard = memo(({ project, isLarge = false }) => (
@@ -98,15 +97,15 @@ const projects = [
   },
   {
     id: 6,
-    title: "",
+    title: "Tree Cutting System",
     description:
-      "A new project will be here soon!",
+      "Enjoyed building this tree-cutting system. The sound might not be the right choice, and a few other elements need work, but the base mechanic is really clever. There's a ton of potential here to expand this into something much bigger and better.",
     image: "projects/project7.jpg",
     tags: ['Roblox Lua'],
-    demoUrl: ".",
+    demoUrl: "https://youtu.be/yjMrYAP0UAc",
     githubUrl: "#",
   },
-  ,];
+];
 
 const olderProjects = [
   {

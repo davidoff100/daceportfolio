@@ -73,6 +73,7 @@ export const Navbar = () => {
               ? "opacity-100 pointer-events-auto"
               : "opacity-0 pointer-events-none"
           )}
+          onClick={() => setIsMenuOpen(false)}
         >
           <div className="flex flex-col space-y-8 text-xl">
             {navItems.map((item, key) => (
@@ -80,7 +81,10 @@ export const Navbar = () => {
                 key={key}
                 href={item.href}
                 className="text-foreground/80 hover:text-primary transition-colors duration-300"
-                onClick={() => setIsMenuOpen(false)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsMenuOpen(false);
+                }}
               >
                 {item.name}
               </a>
