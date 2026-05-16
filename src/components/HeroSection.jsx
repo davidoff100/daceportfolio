@@ -5,9 +5,10 @@ const isMobile = () => window.innerWidth < 768;
 
 export const HeroSection = memo(() => {
   const phrases = [
-    "Roblox Systems Architect",
+    "Programmer",
     "Roblox Scripter",
-    "Creative Problem Solver",
+    "Problem Solver",
+    "System Designer"
   ];
   const [text, setText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
